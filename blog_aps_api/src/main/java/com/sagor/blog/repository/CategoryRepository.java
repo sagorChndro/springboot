@@ -10,4 +10,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 	Category findBycategoryIdAndIsActiveTrue(Long categoryId);
 
 	List<Category> findAllByIsActiveTrue();
+
+	Category findBycategoryId(Long categoryId);
+
+	// Category findBycategory(Long categoryId);
 }

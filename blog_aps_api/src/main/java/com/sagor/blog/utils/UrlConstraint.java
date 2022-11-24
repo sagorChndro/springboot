@@ -10,7 +10,7 @@ public final class UrlConstraint {
 
 	public class UserManagement {
 		public static final String USER = "/users";
-		public static final String USER_POST = USER + "/{userId}";
+		public static final String USER_ID = "/{userId}";
 		public static final String USER_ROOT = VERSION + API + USER;
 		public static final String CREATE_USER = "/userCreate";
 		public static final String UPDATE_USER = "/{userId}";
@@ -20,9 +20,7 @@ public final class UrlConstraint {
 	}
 
 	public class CategoryManagement {
-		public static final String CATEGORY = "/categories";
-		public static final String CATEGORY_POST = UserManagement.USER_POST + CATEGORY + "/{categoryId}";
-		public static final String CATEGORY_ROOT = VERSION + API + CATEGORY;
+		public static final String CATEGORY_ROOT = VERSION + API + "/categories";
 		public static final String CREATE_CATEGORY = "/categoriCreate";
 		public static final String UPDATE_CATEGORY = "/{categoryId}";
 		public static final String DELETE_CATEGORY = "/{categoryId}";
@@ -32,10 +30,12 @@ public final class UrlConstraint {
 
 	public class PostManagement {
 		public static final String POST_ROOT = VERSION + API + "/posts";
-		public static final String CREATE_POST = CategoryManagement.CATEGORY_POST + "/createPost";
+		public static final String CREATE_POST = "/users/{userId}/categories/{categoryId}/createPost";
 		public static final String UPDATE_POST = "/{postId}";
 		public static final String DELETE_POST = "/{postId}";
 		public static final String GET_POST = "/{postId}";
 		public static final String GET_ALL_POST = "/allPosts";
+		public static final String GET_POSTS_BY_USER = "/users/{userId}/posts";
+		public static final String GET_POSTS_BY_CATEGORY = "/categories/{categoryId}/posts";
 	}
 }

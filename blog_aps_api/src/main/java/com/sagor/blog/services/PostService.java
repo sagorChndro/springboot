@@ -5,7 +5,7 @@ import com.sagor.blog.payloadordto.Response;
 
 public interface PostService {
 
-	Response createPost(PostDto postDto, Long userId, Long categoryId);
+	Response createPost(PostDto postDto, Long categoryId, Long userId);
 
 	Response updatePost(Long postId);
 

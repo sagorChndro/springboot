@@ -1,6 +1,7 @@
 package com.sagor.blog.controllers;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +25,32 @@ public class PostController {
 	}
 
 	@PostMapping(UrlConstraint.PostManagement.CREATE_POST)
-	public Response createPost(@RequestBody PostDto postDto, @PathVariable Long userId, @PathVariable Long categoryId,
-			BindingResult result) {
+	public Response createPost(@RequestBody PostDto postDto, @PathVariable("userId") Long userId,
+			@PathVariable("categoryId") Long categoryId, BindingResult result) {
 		if (result.hasErrors()) {
 			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
 		}
-		return postService.createPost(postDto, userId, categoryId);
+		return postService.createPost(postDto, categoryId, userId);
+	}
+
+	@GetMapping(UrlConstraint.PostManagement.GET_POST)
+	public Response getPost(@PathVariable("postId") Long postId) {
+		return postService.getPost(postId);
+	}
+
+	@GetMapping(UrlConstraint.PostManagement.GET_ALL_POST)
+	public Response getAllPost() {
+		return postService.getAllPost();
+	}
+
+	@GetMapping(UrlConstraint.PostManagement.GET_POSTS_BY_CATEGORY)
+	public Response getPostsByCategory(@PathVariable("categoryId") Long categoryId) {
+		return postService.getPostsByCategory(categoryId);
+	}
+
+	@GetMapping(UrlConstraint.PostManagement.GET_POSTS_BY_USER)
+	public Response getPostsByUser(@PathVariable("userId") Long userId) {
+		return postService.getPostsByUser(userId);
 	}
 
 }
