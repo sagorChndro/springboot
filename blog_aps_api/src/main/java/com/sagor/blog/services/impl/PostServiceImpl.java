@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -60,9 +63,18 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Response updatePost(Long postId) {
-
-		return null;
+	public Response updatePost(PostDto postDto, Long postId) {
+		Post post = postRepository.findBypostIdAndIsActiveTrue(postId);
+		if (post != null) {
+			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+			modelMapper.map(postDto, post);
+			post = postRepository.save(post);
+			if (post != null) {
+				return ResponseBuilder.getSuccessResponse(HttpStatus.OK, root + " updated successfully", null);
+			}
+			return ResponseBuilder.getFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error occur");
+		}
+		return ResponseBuilder.getFailureResponse(HttpStatus.NOT_FOUND, root + " is not found");
 	}
 
 	@Override
@@ -81,14 +93,25 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Response deletePost(Long postId) {
-
-		return null;
+		Post post = postRepository.findBypostIdAndIsActiveTrue(postId);
+		if (post != null) {
+			post.setIsActive(false);
+			post = postRepository.save(post);
+			if (post != null) {
+				return ResponseBuilder.getSuccessResponse(HttpStatus.OK, root + " deleted successfully", null);
+			}
+			return ResponseBuilder.getFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error occur");
+		}
+		return ResponseBuilder.getFailureResponse(HttpStatus.NOT_FOUND, root + " not found for delete");
 	}
 
 	@Override
-	public Response getAllPost() {
-		List<Post> posts = postRepository.findAllByIsActiveTrue();
-		List<PostDto> postDtos = this.getPosts(posts);
+	public Response getAllPost(Integer pageNumber, Integer pageSize) {
+		Pageable p = PageRequest.of(pageNumber, pageSize);
+		Page<Post> pagePost = postRepository.findAll(p);
+		List<Post> allPosts = pagePost.getContent();
+		// List<Post> posts = postRepository.findAllByIsActiveTrue();
+		List<PostDto> postDtos = this.getPosts(allPosts);
 		return ResponseBuilder.getSuccessResponse(HttpStatus.OK, "All " + root + " retrieve successfully", postDtos);
 	}
 

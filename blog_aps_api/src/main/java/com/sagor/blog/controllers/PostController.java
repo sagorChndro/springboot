@@ -1,11 +1,14 @@
 package com.sagor.blog.controllers;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sagor.blog.annotations.ApiController;
 import com.sagor.blog.payloadordto.PostDto;
@@ -33,14 +36,31 @@ public class PostController {
 		return postService.createPost(postDto, categoryId, userId);
 	}
 
+	@PutMapping(UrlConstraint.PostManagement.UPDATE_POST)
+	public Response updatePost(@RequestBody PostDto postDto, @PathVariable("postId") Long postId,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
+		}
+		return postService.updatePost(postDto, postId);
+	}
+
+	@DeleteMapping(UrlConstraint.PostManagement.DELETE_POST)
+	public Response deletePost(@PathVariable("postId") Long postId) {
+		return postService.deletePost(postId);
+	}
+
 	@GetMapping(UrlConstraint.PostManagement.GET_POST)
 	public Response getPost(@PathVariable("postId") Long postId) {
 		return postService.getPost(postId);
 	}
 
 	@GetMapping(UrlConstraint.PostManagement.GET_ALL_POST)
-	public Response getAllPost() {
-		return postService.getAllPost();
+	public Response getAllPost(
+			@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+
+			@RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize) {
+		return postService.getAllPost(pageNumber, pageSize);
 	}
 
 	@GetMapping(UrlConstraint.PostManagement.GET_POSTS_BY_CATEGORY)

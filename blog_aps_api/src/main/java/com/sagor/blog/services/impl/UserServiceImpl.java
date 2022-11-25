@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService {
 	public Response getUser(Long userId) {
 		User user = userRepository.findByuserIdAndIsActiveTrue(userId);
 		if (user != null) {
+			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 			UserDto userDto = modelMapper.map(user, UserDto.class);
 			if (userDto != null) {
 				return ResponseBuilder.getSuccessResponse(HttpStatus.OK, root + " retrieve successfully", userDto);

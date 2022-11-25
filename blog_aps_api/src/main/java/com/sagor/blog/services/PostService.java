@@ -7,13 +7,13 @@ public interface PostService {
 
 	Response createPost(PostDto postDto, Long categoryId, Long userId);
 
-	Response updatePost(Long postId);
+	Response updatePost(PostDto postDto, Long postId);
 
 	Response getPost(Long postId);
 
 	Response deletePost(Long postId);
 
-	Response getAllPost();
+	Response getAllPost(Integer pageNumber, Integer pageSize);
 
 	// get all post by category
 	Response getPostsByCategory(Long categoryId);
