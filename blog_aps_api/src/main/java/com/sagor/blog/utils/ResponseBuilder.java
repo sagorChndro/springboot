@@ -41,15 +41,44 @@ public final class ResponseBuilder {
 				.statuscode(status.value()).timestamp(new Date().getTime()).build();
 	}
 
-	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int numberOfElement) {
+	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int pageNumber) {
 		return Response.builder().message(message).status(status.getReasonPhrase()).content(content)
-				.numberOfElement(numberOfElement).statuscode(status.value()).timestamp(new Date().getTime()).build();
+				.pageNumber(pageNumber).statuscode(status.value()).timestamp(new Date().getTime()).build();
 	}
 
-	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int numberOfElement,
-			long rowCount) {
+	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int pageNumber,
+			int pageSize) {
 		return Response.builder().message(message).status(status.getReasonPhrase()).content(content)
-				.numberOfElement(numberOfElement).statuscode(status.value()).rowCount(rowCount)
+				.pageNumber(pageNumber).pageSize(pageSize).statuscode(status.value()).timestamp(new Date().getTime())
+				.build();
+	}
+
+	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int pageNumber,
+			int pageSize, long totalPages) {
+		return Response.builder().message(message).status(status.getReasonPhrase()).content(content)
+				.pageNumber(pageNumber).pageSize(pageSize).totalPages(totalPages).statuscode(status.value())
 				.timestamp(new Date().getTime()).build();
+	}
+
+	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int pageNumber,
+			int pageSize, long totalPages, Boolean lastPage) {
+		return Response.builder().message(message).status(status.getReasonPhrase()).content(content)
+				.pageNumber(pageNumber).pageSize(pageSize).totalPages(totalPages).lastPage(lastPage)
+				.statuscode(status.value()).timestamp(new Date().getTime()).build();
+	}
+
+	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int pageNumber,
+			int pageSize, long totalPages, Boolean lastPage, int numberOfElement) {
+		return Response.builder().message(message).status(status.getReasonPhrase()).content(content)
+				.numberOfElement(numberOfElement).pageNumber(pageNumber).pageSize(pageSize).totalPages(totalPages)
+				.lastPage(lastPage).statuscode(status.value()).timestamp(new Date().getTime()).build();
+	}
+
+	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int pageNumber,
+			int pageSize, long totalPages, Boolean lastPage, int numberOfElement, long rowCount) {
+		return Response.builder().message(message).status(status.getReasonPhrase()).content(content)
+				.numberOfElement(numberOfElement).pageNumber(pageNumber).pageSize(pageSize).totalPages(totalPages)
+				.totalPages(totalPages).statuscode(status.value()).rowCount(rowCount).timestamp(new Date().getTime())
+				.build();
 	}
 }

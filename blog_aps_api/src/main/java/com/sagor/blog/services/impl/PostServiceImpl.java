@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -106,12 +107,22 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Response getAllPost(Integer pageNumber, Integer pageSize) {
-		Pageable p = PageRequest.of(pageNumber, pageSize);
+	public Response getAllPostWithPageNoAndPageSize(Integer pageNumber, Integer pageSize, String sortBy,
+			String sortDir) {
+		Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+		Pageable p = PageRequest.of(pageNumber, pageSize, sort);
 		Page<Post> pagePost = postRepository.findAll(p);
 		List<Post> allPosts = pagePost.getContent();
 		// List<Post> posts = postRepository.findAllByIsActiveTrue();
 		List<PostDto> postDtos = this.getPosts(allPosts);
+		return ResponseBuilder.getSuccessResponse(HttpStatus.OK, root + " retrieve successfully by page", postDtos,
+				pageNumber, pageSize);
+	}
+
+	@Override
+	public Response getALlPost() {
+		List<Post> posts = postRepository.findAllByIsActiveTrue();
+		List<PostDto> postDtos = this.getPosts(posts);
 		return ResponseBuilder.getSuccessResponse(HttpStatus.OK, "All " + root + " retrieve successfully", postDtos);
 	}
 
@@ -143,9 +154,10 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Response searchPosts(String keyword) {
-
-		return null;
+	public Response searchPosts(String keywords) {
+		List<Post> posts = postRepository.searchByPostTitle(keywords);
+		List<PostDto> postDots = this.getPosts(posts);
+		return ResponseBuilder.getSuccessResponse(HttpStatus.FOUND, root + " found that you have searched", postDots);
 	}
 
 	private List<PostDto> getPosts(List<Post> posts) {

@@ -34,8 +34,14 @@ public final class UrlConstraint {
 		public static final String UPDATE_POST = "/{postId}";
 		public static final String DELETE_POST = "/{postId}";
 		public static final String GET_POST = "/{postId}";
+		public static final String GET_ALL_POST_BY_PAGE = "/allPostsByPage";
 		public static final String GET_ALL_POST = "/allPosts";
 		public static final String GET_POSTS_BY_USER = "/users/{userId}/posts";
 		public static final String GET_POSTS_BY_CATEGORY = "/categories/{categoryId}/posts";
+		public static final String SEARCH_POST = "search/{keywords}";
+		public static final String PAGE_NUMBER = "0";
+		public static final String PAGE_SIZE = "10";
+		public static final String SORT_BY = "postId";
+		public static final String SORT_DIR = "asc";
 	}
 }

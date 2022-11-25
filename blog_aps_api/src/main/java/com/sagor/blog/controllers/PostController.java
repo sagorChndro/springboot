@@ -55,12 +55,18 @@ public class PostController {
 		return postService.getPost(postId);
 	}
 
-	@GetMapping(UrlConstraint.PostManagement.GET_ALL_POST)
-	public Response getAllPost(
-			@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+	@GetMapping(UrlConstraint.PostManagement.GET_ALL_POST_BY_PAGE)
+	public Response getAllPostWithPageNoAndPageSize(
+			@RequestParam(value = "pageNumber", defaultValue = UrlConstraint.PostManagement.PAGE_NUMBER, required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = UrlConstraint.PostManagement.PAGE_SIZE, required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = UrlConstraint.PostManagement.SORT_BY, required = false) String sortBy,
+			@RequestParam(value = "sortDir", defaultValue = UrlConstraint.PostManagement.SORT_DIR, required = false) String sortDir) {
+		return postService.getAllPostWithPageNoAndPageSize(pageNumber, pageSize, sortBy, sortDir);
+	}
 
-			@RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize) {
-		return postService.getAllPost(pageNumber, pageSize);
+	@GetMapping(UrlConstraint.PostManagement.GET_ALL_POST)
+	public Response getALlPost() {
+		return postService.getALlPost();
 	}
 
 	@GetMapping(UrlConstraint.PostManagement.GET_POSTS_BY_CATEGORY)
@@ -71,6 +77,11 @@ public class PostController {
 	@GetMapping(UrlConstraint.PostManagement.GET_POSTS_BY_USER)
 	public Response getPostsByUser(@PathVariable("userId") Long userId) {
 		return postService.getPostsByUser(userId);
+	}
+
+	@GetMapping(UrlConstraint.PostManagement.SEARCH_POST)
+	public Response searchPostsByTitle(@PathVariable("keywords") String keywords) {
+		return postService.searchPosts(keywords);
 	}
 
 }

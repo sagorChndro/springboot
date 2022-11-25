@@ -5,10 +5,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Builder
-@Data
+@Getter
+@Setter
 public class Response {
 	@JsonInclude(JsonInclude.Include.ALWAYS)
 	private long timestamp;
@@ -21,9 +23,18 @@ public class Response {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Object content;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private int pageNumber;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private int pageSize;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private long totalPages;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Boolean lastPage;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private int numberOfElement;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private long rowCount;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private List<ErrorResponseDto> errors;
 
 }
