@@ -81,4 +81,12 @@ public final class ResponseBuilder {
 				.totalPages(totalPages).statuscode(status.value()).rowCount(rowCount).timestamp(new Date().getTime())
 				.build();
 	}
+
+	public static Response getSuccessResponse(HttpStatus status, String message, Object content, int pageNumber,
+			int pageSize, long totalPages, Boolean lastPage, int numberOfElement, long rowCount, String fileName) {
+		return Response.builder().message(message).status(status.getReasonPhrase()).content(content)
+				.numberOfElement(numberOfElement).pageNumber(pageNumber).pageSize(pageSize).totalPages(totalPages)
+				.totalPages(totalPages).statuscode(status.value()).fileName(fileName).rowCount(rowCount)
+				.timestamp(new Date().getTime()).build();
+	}
 }

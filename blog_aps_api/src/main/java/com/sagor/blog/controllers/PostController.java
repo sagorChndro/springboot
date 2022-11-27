@@ -1,5 +1,8 @@
 package com.sagor.blog.controllers;
 
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sagor.blog.annotations.ApiController;
 import com.sagor.blog.payloadordto.PostDto;
 import com.sagor.blog.payloadordto.Response;
+import com.sagor.blog.services.FileService;
 import com.sagor.blog.services.PostService;
 import com.sagor.blog.utils.ResponseBuilder;
 import com.sagor.blog.utils.UrlConstraint;
@@ -22,9 +27,13 @@ import com.sagor.blog.utils.UrlConstraint;
 public class PostController {
 
 	private final PostService postService;
+	private final FileService fileService;
+	@Value("${project.image}")
+	private String path;
 
-	public PostController(PostService postService) {
+	public PostController(PostService postService, FileService fileService) {
 		this.postService = postService;
+		this.fileService = fileService;
 	}
 
 	@PostMapping(UrlConstraint.PostManagement.CREATE_POST)
@@ -82,6 +91,13 @@ public class PostController {
 	@GetMapping(UrlConstraint.PostManagement.SEARCH_POST)
 	public Response searchPostsByTitle(@PathVariable("keywords") String keywords) {
 		return postService.searchPosts(keywords);
+	}
+
+	@PostMapping("/image/upload/{postId}")
+	public Response uploadPostImage(@RequestBody @RequestParam("image") MultipartFile image,
+			@PathVariable("postId") Long postId, PostDto postDto) throws IOException {
+
+		return postService.updatePost(postDto, postId);
 	}
 
 }

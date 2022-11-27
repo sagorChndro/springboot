@@ -22,6 +22,7 @@ import com.sagor.blog.repository.PostRepository;
 import com.sagor.blog.repository.UserRepository;
 import com.sagor.blog.services.PostService;
 import com.sagor.blog.utils.ResponseBuilder;
+import com.sagor.blog.utils.UrlConstraint;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -42,9 +43,9 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Response createPost(PostDto postDto, Long categoryId, Long userId) {
 		Post post = modelMapper.map(postDto, Post.class);
-		Category category = categoryRepository.findBycategoryId(categoryId);
+		Category category = categoryRepository.findBycategoryIdAndIsActiveTrue(categoryId);
 		post.setCategory(category);
-		User user = userRepository.findByuserId(userId);
+		User user = userRepository.findByuserIdAndIsActiveTrue(userId);
 		post.setUser(user);
 		post = postRepository.save(post);
 		if (post != null) {
@@ -109,7 +110,8 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Response getAllPostWithPageNoAndPageSize(Integer pageNumber, Integer pageSize, String sortBy,
 			String sortDir) {
-		Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+		Sort sort = sortDir.equalsIgnoreCase(UrlConstraint.PostManagement.SORT_DIR) ? Sort.by(sortBy).ascending()
+				: Sort.by(sortBy).descending();
 		Pageable p = PageRequest.of(pageNumber, pageSize, sort);
 		Page<Post> pagePost = postRepository.findAll(p);
 		List<Post> allPosts = pagePost.getContent();
@@ -128,7 +130,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Response getPostsByCategory(Long categoryId) {
-		Category category = categoryRepository.findBycategoryId(categoryId);
+		Category category = categoryRepository.findBycategoryIdAndIsActiveTrue(categoryId);
 		if (category != null) {
 			List<Post> posts = category.getPosts();
 		} else {
@@ -141,7 +143,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Response getPostsByUser(Long userId) {
-		User user = userRepository.findByuserId(userId);
+		User user = userRepository.findByuserIdAndIsActiveTrue(userId);
 		if (user != null) {
 			List<Post> post = user.getPosts();
 		} else {
