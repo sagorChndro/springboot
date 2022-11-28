@@ -1,6 +1,7 @@
 package com.sagor.blog.controllers;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
@@ -94,10 +95,10 @@ public class PostController {
 	}
 
 	@PostMapping("/image/upload/{postId}")
-	public Response uploadPostImage(@RequestBody @RequestParam("image") MultipartFile image,
-			@PathVariable("postId") Long postId, PostDto postDto) throws IOException {
-
-		return postService.updatePost(postDto, postId);
+	public Response create(PostDto postDto, @RequestParam(name = "docName") String docName,
+			@RequestParam(name = "multipartFile") MultipartFile multipartFile, HttpServletRequest request,
+			HttpServletResponse response, @PathVariable("postId") Long postId) {
+		return fileService.create(postDto, docName, multipartFile);
 	}
 
 }

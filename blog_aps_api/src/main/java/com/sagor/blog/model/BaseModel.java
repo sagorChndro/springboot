@@ -14,7 +14,7 @@ import lombok.Data;
 
 @MappedSuperclass
 @Data
-public class BaseModel implements Serializable {
+public abstract class BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Column(updatable = false)
 	private String createdby;

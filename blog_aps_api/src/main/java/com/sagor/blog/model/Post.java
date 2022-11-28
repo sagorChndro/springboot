@@ -22,6 +22,7 @@ public class Post extends BaseModel {
 	private String postTitle;
 	private String postContent;
 	private String imageName;
+	private String imageLocation;
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;

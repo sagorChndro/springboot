@@ -2,8 +2,6 @@ package com.sagor.blog.payloadordto;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Builder;
@@ -36,8 +34,6 @@ public class Response {
 	private int numberOfElement;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private long rowCount;
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private MultipartFile fileName;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private List<ErrorResponseDto> errors;
 
