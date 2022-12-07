@@ -2,6 +2,7 @@ package com.sagor.blog.controllers;
 
 import javax.validation.Valid;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,7 @@ public class UserController {
 		return userService.getUser(userId);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(UrlConstraint.UserManagement.DELETE_USER)
 	public Response delete(@PathVariable("userId") Long userId) {
 		return userService.delete(userId);

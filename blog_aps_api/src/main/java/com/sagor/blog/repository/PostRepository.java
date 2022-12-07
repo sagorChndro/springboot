@@ -14,6 +14,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 	List<Post> searchByPostTitle(String postTitle);
 
-	int countByimageLocation(String location);
-
 }

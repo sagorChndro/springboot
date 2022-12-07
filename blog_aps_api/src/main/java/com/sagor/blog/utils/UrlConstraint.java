@@ -9,14 +9,16 @@ public final class UrlConstraint {
 	private static final String API = "/api";
 
 	public class UserManagement {
-		public static final String USER = "/users";
-		public static final String USER_ID = "/{userId}";
-		public static final String USER_ROOT = VERSION + API + USER;
+		// public static final String USER = "/users";
+		// public static final String USER_ID = "/{userId}";
+		public static final String USER_ROOT = VERSION + API + "/users";
 		public static final String CREATE_USER = "/userCreate";
 		public static final String UPDATE_USER = "/{userId}";
 		public static final String DELETE_USER = "/{userId}";
 		public static final String GET_USER = "/{userId}";
 		public static final String GET_ALL_USER = "/allUser";
+		public static final Long NORMAL_USER = (long) 502;
+		public static final Long ADMIN_USER = (long) 501;
 	}
 
 	public class CategoryManagement {
@@ -43,5 +45,11 @@ public final class UrlConstraint {
 		public static final String PAGE_SIZE = "10";
 		public static final String SORT_BY = "postId";
 		public static final String SORT_DIR = "asc";
+	}
+
+	public class CommentManagement {
+		public static final String COMMENT_ROOT = VERSION + API + "comments";
+		public static final String CREATE_COMMENT = "/users/{userId}/posts/{postId}/createComment";
+		public static final String DELETE_COMMENT = "/{commentId}";
 	}
 }

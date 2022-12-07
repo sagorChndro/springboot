@@ -1,5 +1,8 @@
 package com.sagor.blog.payloadordto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -21,4 +24,6 @@ public class UserDto {
 	@Size(min = 3, max = 10, message = "Password must be min of 3 character and max of 10 character")
 	private String password;
 	private String about;
+	private Set<RoleDto> rolesDtos = new HashSet<>();
+	private Set<CommentDto> commentDto;
 }

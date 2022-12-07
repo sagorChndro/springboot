@@ -10,6 +10,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByuserIdAndIsActiveTrue(Long userId);
 
+	User findBynameAndIsActiveTrue(String name);
+
 	List<User> findAllByIsActiveTrue();
 
 	// User findByuserId(Long userId);
