@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sagor.blog.annotations.ApiController;
+import com.sagor.blog.annotations.ValidateData;
 import com.sagor.blog.payloadordto.CategoryDto;
 import com.sagor.blog.payloadordto.Response;
 import com.sagor.blog.services.CategoryService;
-import com.sagor.blog.utils.ResponseBuilder;
 import com.sagor.blog.utils.UrlConstraint;
 
 @ApiController
@@ -29,19 +29,21 @@ public class CategoryController {
 	}
 
 	@PostMapping(UrlConstraint.CategoryManagement.CREATE_CATEGORY)
+	@ValidateData
 	public Response createCategory(@Valid @RequestBody CategoryDto categoryDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
-		}
+//		if (result.hasErrors()) {
+//			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
+//		}
 		return categoryService.createCategory(categoryDto);
 	}
 
 	@PutMapping(UrlConstraint.CategoryManagement.UPDATE_CATEGORY)
+	@ValidateData
 	public Response updateCategory(@PathVariable("categoryId") Long categoryId,
 			@Valid @RequestBody CategoryDto categoryDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseBuilder.getFailureResponse(result, "Bean binding result");
-		}
+//		if (result.hasErrors()) {
+//			return ResponseBuilder.getFailureResponse(result, "Bean binding result");
+//		}
 		return categoryService.updateCategory(categoryId, categoryDto);
 	}
 

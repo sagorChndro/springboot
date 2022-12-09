@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sagor.blog.annotations.ApiController;
+import com.sagor.blog.annotations.ValidateData;
 import com.sagor.blog.payloadordto.PostDto;
 import com.sagor.blog.payloadordto.Response;
 import com.sagor.blog.services.PostService;
@@ -32,15 +33,17 @@ public class PostController {
 	}
 
 	@PostMapping(UrlConstraint.PostManagement.CREATE_POST)
+	@ValidateData
 	public Response createPost(@RequestBody PostDto postDto, @PathVariable("userId") Long userId,
 			@PathVariable("categoryId") Long categoryId, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
-		}
+//		if (result.hasErrors()) {
+//			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
+//		}
 		return postService.createPost(postDto, categoryId, userId);
 	}
 
 	@PutMapping(UrlConstraint.PostManagement.UPDATE_POST)
+	@ValidateData
 	public Response updatePost(@RequestBody PostDto postDto, @PathVariable("postId") Long postId,
 			BindingResult result) {
 		if (result.hasErrors()) {

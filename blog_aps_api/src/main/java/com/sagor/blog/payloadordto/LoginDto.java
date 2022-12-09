@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 public class LoginDto {
-	@NotEmpty(message = "User name must be valid")
+	@NotEmpty(message = "User is mandatory")
 	private String name;
-	@NotNull(message = "Password mandatory")
+	@NotNull(message = "Password is mandatory")
 	private String password;
 
 }

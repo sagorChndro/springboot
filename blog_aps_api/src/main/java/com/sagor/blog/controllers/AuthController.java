@@ -2,6 +2,7 @@ package com.sagor.blog.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,12 +27,13 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public Response login(@RequestBody LoginDto loginDto, HttpServletRequest request, HttpServletResponse response) {
+	public Response login(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request,
+			HttpServletResponse response) {
 		return authService.login(loginDto);
 	}
 
 	@PostMapping("/register")
-	public Response registerNewUser(@RequestBody UserDto userDto) {
+	public Response registerNewUser(@Valid @RequestBody UserDto userDto) {
 		return userService.registerNewUser(userDto);
 	}
 

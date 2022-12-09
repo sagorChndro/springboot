@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sagor.blog.annotations.ApiController;
+import com.sagor.blog.annotations.ValidateData;
 import com.sagor.blog.payloadordto.Response;
 import com.sagor.blog.payloadordto.UserDto;
 import com.sagor.blog.services.UserService;
-import com.sagor.blog.utils.ResponseBuilder;
 import com.sagor.blog.utils.UrlConstraint;
 
 @ApiController
@@ -29,19 +29,21 @@ public class UserController {
 	}
 
 	@PostMapping(UrlConstraint.UserManagement.CREATE_USER)
+	@ValidateData
 	public Response createUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
-		}
+//		if (result.hasErrors()) {
+//			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
+//		}
 		return userService.createUser(userDto);
 	}
 
 	@PutMapping(UrlConstraint.UserManagement.UPDATE_USER)
+	@ValidateData
 	public Response updateUser(@PathVariable("userId") Long userId, @Valid @RequestBody UserDto userDto,
 			BindingResult result) {
-		if (result.hasErrors()) {
-			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
-		}
+//		if (result.hasErrors()) {
+//			return ResponseBuilder.getFailureResponse(result, "Bean binding error");
+//		}
 		return userService.updateUser(userDto, userId);
 	}
 
