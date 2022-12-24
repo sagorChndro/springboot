@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class Hotel extends BaseModel {
 	@Id
-	private String hotelId;
+	private String id;
 	private String name;
 	private String location;
 	private String about;

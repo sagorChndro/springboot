@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class HotelDto {
-	private String hotelId;
+	private String id;
 	@NotBlank(message = "Hotel name mandatory")
 	private String name;
 	@NotNull(message = "Location must be mandatory")

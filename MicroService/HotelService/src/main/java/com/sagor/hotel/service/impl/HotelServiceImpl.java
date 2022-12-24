@@ -31,7 +31,7 @@ public class HotelServiceImpl implements HotelService {
 	public Response create(HotelDto hotelDto) {
 		Hotel hotel = modelMapper.map(hotelDto, Hotel.class);
 		String randomHotelId = UUID.randomUUID().toString();
-		hotel.setHotelId(randomHotelId);
+		hotel.setId(randomHotelId);
 		hotel = hotelRepository.save(hotel);
 		if (hotel != null) {
 			return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, root + " created successfully", hotel);
@@ -40,8 +40,8 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public Response update(HotelDto hotelDto, String hotelId) {
-		Hotel hotel = hotelRepository.findByIdAndIsActiveTrue(hotelId);
+	public Response update(HotelDto hotelDto, String id) {
+		Hotel hotel = hotelRepository.findByIdAndIsActiveTrue(id);
 		if (hotel != null) {
 			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 			modelMapper.map(hotelDto, hotel);
@@ -56,8 +56,8 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public Response get(String hotelId) {
-		Hotel hotel = hotelRepository.findByIdAndIsActiveTrue(hotelId);
+	public Response get(String id) {
+		Hotel hotel = hotelRepository.findByIdAndIsActiveTrue(id);
 		if (hotel != null) {
 			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 			HotelDto hotelDto = modelMapper.map(hotel, HotelDto.class);
@@ -71,8 +71,8 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public Response delete(String hotelId) {
-		Hotel hotel = hotelRepository.findByIdAndIsActiveTrue(hotelId);
+	public Response delete(String id) {
+		Hotel hotel = hotelRepository.findByIdAndIsActiveTrue(id);
 		if (hotel != null) {
 			hotel.setIsActive(false);
 			hotel = hotelRepository.save(hotel);

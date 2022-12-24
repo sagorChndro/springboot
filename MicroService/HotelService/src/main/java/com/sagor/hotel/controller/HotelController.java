@@ -35,22 +35,21 @@ public class HotelController {
 	}
 
 	@PutMapping(UrlConstant.HotelManagemant.UPDATE_HOTEL)
-	public Response update(@RequestBody HotelDto hotelDto, @PathVariable("hotelId") String hotelId,
-			BindingResult result) {
+	public Response update(@RequestBody HotelDto hotelDto, @PathVariable("id") String id, BindingResult result) {
 		if (result.hasErrors()) {
 			return ResponseBuilder.getFailureResponse(result, "Bean binding result");
 		}
-		return hotelService.update(hotelDto, hotelId);
+		return hotelService.update(hotelDto, id);
 	}
 
 	@GetMapping(UrlConstant.HotelManagemant.GET_HOTEL)
-	public Response get(@PathVariable("hotelId") String hotelId) {
-		return hotelService.get(hotelId);
+	public Response get(@PathVariable("hotelId") String id) {
+		return hotelService.get(id);
 	}
 
 	@DeleteMapping(UrlConstant.HotelManagemant.DELETE_HOTEL)
-	public Response delete(@PathVariable("hotelId") String hotelId) {
-		return hotelService.delete(hotelId);
+	public Response delete(@PathVariable("hotelId") String id) {
+		return hotelService.delete(id);
 	}
 
 	@GetMapping(UrlConstant.HotelManagemant.GET_ALL)
