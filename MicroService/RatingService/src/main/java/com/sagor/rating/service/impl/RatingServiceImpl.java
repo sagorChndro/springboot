@@ -2,6 +2,7 @@ package com.sagor.rating.service.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,9 @@ public class RatingServiceImpl implements RatingService {
 	@Override
 	public Response create(RatingDto ratingDto) {
 		Rating rating = modelMapper.map(ratingDto, Rating.class);
+		String randomUserId = UUID.randomUUID().toString();
+		rating.setRatingId(randomUserId);
+		rating = ratingRepository.save(rating);
 		if (rating != null) {
 			return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, root + " created successfully", rating);
 		}
@@ -85,14 +89,14 @@ public class RatingServiceImpl implements RatingService {
 	@Override
 	public Response getAll() {
 		Set<Rating> ratings = ratingRepository.findAllByIsActiveTrue();
-		Set<RatingDto> ratingDtos = this.getRating(ratings);
+		Set<RatingDto> ratingDtos = this.getRatingOrGetRatingFromUserIdOrHotelId(ratings);
 		return ResponseBuilder.getSuccessResponse(HttpStatus.OK, "All " + root + " retireve successfully", ratingDtos);
 	}
 
 	@Override
 	public Response getRatingByUserId(String userId) {
 		Set<Rating> ratings = ratingRepository.findByUserIdAndIsActiveTrue(userId);
-		Set<RatingDto> ratingDtos = this.getRatingFromUserId(ratings);
+		Set<RatingDto> ratingDtos = this.getRatingOrGetRatingFromUserIdOrHotelId(ratings);
 		return ResponseBuilder.getSuccessResponse(HttpStatus.OK, "All" + root + " retireve successfully from user",
 				ratingDtos);
 	}
@@ -100,39 +104,39 @@ public class RatingServiceImpl implements RatingService {
 	@Override
 	public Response getRatingByHotelId(String hotelId) {
 		Set<Rating> ratings = ratingRepository.findByHotelIdAndIsActiveTrue(hotelId);
-		Set<RatingDto> ratingDtos = this.getRatingFromHotelId(ratings);
+		Set<RatingDto> ratingDtos = this.getRatingOrGetRatingFromUserIdOrHotelId(ratings);
 		return ResponseBuilder.getSuccessResponse(HttpStatus.OK, "All" + root + " retireve successfully from hotel",
 				ratingDtos);
 	}
 
-	private Set<RatingDto> getRating(Set<Rating> ratings) {
+//	private Set<RatingDto> getRating(Set<Rating> ratings) {
+//		Set<RatingDto> ratingDtos = new HashSet<>();
+//		ratings.forEach(rating -> {
+//			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+//			RatingDto ratingDto = modelMapper.map(ratings, RatingDto.class);
+//			ratingDtos.add(ratingDto);
+//		});
+//		return ratingDtos;
+//	}
+
+	private Set<RatingDto> getRatingOrGetRatingFromUserIdOrHotelId(Set<Rating> ratings) {
 		Set<RatingDto> ratingDtos = new HashSet<>();
 		ratings.forEach(rating -> {
 			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
-			RatingDto ratingDto = modelMapper.map(ratings, RatingDto.class);
+			RatingDto ratingDto = modelMapper.map(rating, RatingDto.class);
 			ratingDtos.add(ratingDto);
 		});
 		return ratingDtos;
 	}
 
-	private Set<RatingDto> getRatingFromUserId(Set<Rating> ratings) {
-		Set<RatingDto> ratingDtos = new HashSet<>();
-		ratings.forEach(rating -> {
-			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
-			RatingDto ratingDto = modelMapper.map(ratings, RatingDto.class);
-			ratingDtos.add(ratingDto);
-		});
-		return ratingDtos;
-	}
-
-	private Set<RatingDto> getRatingFromHotelId(Set<Rating> ratings) {
-		Set<RatingDto> ratingDtos = new HashSet<>();
-		ratings.forEach(rating -> {
-			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
-			RatingDto ratingDto = modelMapper.map(ratings, RatingDto.class);
-			ratingDtos.add(ratingDto);
-		});
-		return ratingDtos;
-	}
+//	private Set<RatingDto> getRatingFromHotelId(Set<Rating> ratings) {
+//		Set<RatingDto> ratingDtos = new HashSet<>();
+//		ratings.forEach(rating -> {
+//			modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+//			RatingDto ratingDto = modelMapper.map(ratings, RatingDto.class);
+//			ratingDtos.add(ratingDto);
+//		});
+//		return ratingDtos;
+//	}
 
 }
