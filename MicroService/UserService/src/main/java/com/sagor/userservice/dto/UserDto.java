@@ -1,9 +1,14 @@
 package com.sagor.userservice.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
+import com.sagor.userservice.model.Rating;
 
 import jakarta.persistence.Column;
 import lombok.Getter;
@@ -23,5 +28,6 @@ public class UserDto {
 	private String password;
 	@NotBlank(message = "About must not be empty")
 	private String about;
+	private List<Rating> ratings = new ArrayList<>();
 
 }

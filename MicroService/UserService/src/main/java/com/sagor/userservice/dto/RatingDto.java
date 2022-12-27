@@ -1,16 +1,13 @@
-package com.sagor.userservice.model;
+package com.sagor.userservice.dto;
 
-import lombok.AllArgsConstructor;
+import com.sagor.userservice.model.Hotel;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-
-public class Rating {
+public class RatingDto {
 	private String ratingId;
 	private String userId;
 	private String hotelId;
