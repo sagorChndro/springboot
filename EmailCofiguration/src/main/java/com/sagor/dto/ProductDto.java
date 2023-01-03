@@ -14,5 +14,4 @@ public class ProductDto {
 	@NotNull(message = "price is mandatory")
 	private Double price;
 	private String description;
-
 }

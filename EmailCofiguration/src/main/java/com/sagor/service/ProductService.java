@@ -1,5 +1,7 @@
 package com.sagor.service;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.HttpEntity;
 
 import com.sagor.dto.ProductDto;
@@ -17,6 +19,6 @@ public interface ProductService {
 
 	Response getAll();
 
-	HttpEntity<byte[]> getPdfResponse();
+	HttpEntity<byte[]> getPdfResponse(HttpServletResponse response);
 
 }

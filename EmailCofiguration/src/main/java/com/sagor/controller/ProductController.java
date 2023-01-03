@@ -1,7 +1,9 @@
 package com.sagor.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,5 +59,9 @@ public class ProductController {
 	@GetMapping(UrlConstraint.ProductManagement.GET_ALL)
 	public Response getAll() {
 		return productService.getAll();
+	}
+
+	public HttpEntity<byte[]> getPdf(HttpServletResponse response) {
+		return productService.getPdfResponse(response);
 	}
 }

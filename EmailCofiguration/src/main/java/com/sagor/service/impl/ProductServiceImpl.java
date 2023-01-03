@@ -7,11 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import com.sagor.dto.ProductDto;
@@ -35,6 +40,7 @@ public class ProductServiceImpl implements ProductService {
 	private final MailService mailService;
 	private final HikariDataSource dataSource;
 	private final ModelMapper modelMapper;
+	@Value("classpath:src/main/resource/static/reports/product.jasper")
 	private Resource reportResource;
 
 	public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper, MailService mailService,
@@ -124,12 +130,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public HttpEntity<byte[]> getPdfResponse() {
+	public HttpEntity<byte[]> getPdfResponse(HttpServletResponse response) {
 		Map<String, Object> reportParams = new HashMap<>();
 		try {
 			JasperPrint print = JasperFillManager.fillReport(reportResource.getFile().getName(), reportParams,
 					dataSource.getConnection());
 			byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			response.setHeader("Content-Description", "attachment: filename=abc.pdf");
+			return new HttpEntity<>(pdfBytes, headers);
 		} catch (JRException e) {
 
 			e.printStackTrace();
