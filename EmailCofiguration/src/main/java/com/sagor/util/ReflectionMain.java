@@ -32,7 +32,7 @@ public class ReflectionMain {
 
 		// Non static void method
 		Method method4 = ReflectionUtil.getMethod(className1, "helloNonStatic");
-		String s3 = (String) method4.invoke(Class.forName(className1).getConstructor().newInstance());
+		method4.invoke(Class.forName(className1).getConstructor().newInstance());
 
 	}
 
