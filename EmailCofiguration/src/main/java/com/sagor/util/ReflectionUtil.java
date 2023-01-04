@@ -19,7 +19,7 @@ public final class ReflectionUtil {
 			} catch (Exception e) {
 				method = className.getDeclaredMethod(methodName, parameters); // static method er jonno
 			}
-			method.setAccessible(false);
+			method.setAccessible(true);
 			return method;
 		} catch (Exception e) {
 			logger.error("Reflection Error : " + e.getMessage());
