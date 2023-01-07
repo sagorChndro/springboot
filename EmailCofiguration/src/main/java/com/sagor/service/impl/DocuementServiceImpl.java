@@ -1,13 +1,18 @@
 package com.sagor.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -56,11 +61,12 @@ public class DocuementServiceImpl implements DocumentService {
 	private Boolean uploadFile(MultipartFile multipartFile, String location) {
 		try {
 			byte[] bytes = multipartFile.getBytes();
-			File file = new File(location);
+			String dirLocation = location.substring(0, location.lastIndexOf(File.separator));
+			File file = new File(dirLocation);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
-			Path path = Paths.get(location + File.separator + multipartFile.getOriginalFilename());
+			Path path = Paths.get(dirLocation + File.separator + multipartFile.getOriginalFilename());
 			Files.write(path, bytes);
 			return true;
 		} catch (IOException e) {
@@ -78,4 +84,29 @@ public class DocuementServiceImpl implements DocumentService {
 				+ UUID.randomUUID().toString() + File.separator + fileName, fileName);
 	}
 
+	@Override
+	public Map<String, Object> download(Long id) {
+		Document document = documentRepository.findByIdAndIsActiveTrue(id);
+		if (document == null) {
+			return null;
+		}
+		// download
+		File downloadableFile = new File(document.getDocumentLocation());
+		if (!downloadableFile.exists()) {
+			return null;
+		}
+		InputStream targetStream = null;
+		try {
+			targetStream = new FileInputStream(downloadableFile);
+			byte[] bytes = IOUtils.toByteArray(targetStream);
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("bytes", bytes);
+			resultMap.put("docName", downloadableFile.getName());
+			return resultMap;
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+
+	}
 }
