@@ -1,7 +1,7 @@
 package com.sagor.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -30,24 +28,24 @@ public abstract class BaseModel implements Serializable {
 	private Long id;
 	@Column(updatable = false)
 	private String createdBy;
-	@Temporal(TemporalType.TIMESTAMP)
+	// @Temporal(TemporalType.TIMESTAMP)
 	@Column(updatable = false)
-	private Date createdAt;
+	private LocalDateTime createdAt;
 	private String updatedBy;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updatedAt;
+	// @Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime updatedAt;
 
 	private Boolean isActive;
 
 	@PrePersist
 	public void setPrePersist() {
-		this.createdAt = new Date();
+		this.createdAt = LocalDateTime.now();
 		this.isActive = true;
 	}
 
 	@PreUpdate
 	public void setPreUpdate() {
-		this.updatedAt = new Date();
+		this.updatedAt = LocalDateTime.now();
 	}
 
 }
