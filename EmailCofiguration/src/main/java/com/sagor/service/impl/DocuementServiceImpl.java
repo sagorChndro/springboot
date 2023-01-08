@@ -7,14 +7,20 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +30,12 @@ import com.sagor.repository.DocumentRepository;
 import com.sagor.service.DocumentService;
 import com.sagor.util.DateUtils;
 import com.sagor.util.ResponseBuilder;
+import com.zaxxer.hikari.HikariDataSource;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 @Service
 public class DocuementServiceImpl implements DocumentService {
@@ -31,9 +43,14 @@ public class DocuementServiceImpl implements DocumentService {
 	private final DocumentRepository documentRepository;
 	@Value("${file.root.location}")
 	private String fileRootLocation;
+	private final HikariDataSource dataSource;
+//	@Value("classpath: src/main/resource/static/reports/product.jasper")
+//	private final Resource resource;
 
-	public DocuementServiceImpl(DocumentRepository documentRepository) {
+	public DocuementServiceImpl(DocumentRepository documentRepository, HikariDataSource dataSource) {
 		this.documentRepository = documentRepository;
+		this.dataSource = dataSource;
+
 	}
 
 	@Override
@@ -108,5 +125,23 @@ public class DocuementServiceImpl implements DocumentService {
 			return null;
 		}
 
+	}
+
+	@Override
+	public HttpEntity<byte[]> downloadJasper(HttpServletResponse response) {
+		Map<String, Object> reportParams = new HashMap<>();
+		try {
+			JasperPrint print = JasperFillManager.fillReport(
+					"C:\\Users\\Asus\\eclipse-workspace\\EmailCofiguration\\src\\main\\resources\\static\\reports\\product.jasper",
+					reportParams, dataSource.getConnection());
+			byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			response.setHeader("Content-Description", "attachment: filename=product_list.pdf");
+			return new HttpEntity<>(pdfBytes, headers);
+		} catch (JRException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

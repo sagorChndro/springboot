@@ -61,6 +61,7 @@ public class ProductController {
 		return productService.getAll();
 	}
 
+	@GetMapping(UrlConstraint.ProductManagement.DOWNLOAD_JASPER)
 	public HttpEntity<byte[]> getPdf(HttpServletResponse response) {
 		return productService.getPdfResponse(response);
 	}

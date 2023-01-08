@@ -16,6 +16,7 @@ public final class UrlConstraint {
 		public static final String DELETED = "/{id}";
 		public static final String GET = "/{id}";
 		public static final String GET_ALL = "/all";
+		public static final String DOWNLOAD_JASPER = "/downloadjasper";
 	}
 
 }

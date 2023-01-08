@@ -1,22 +1,14 @@
 package com.sagor.service.impl;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import com.sagor.dto.ProductDto;
@@ -27,11 +19,6 @@ import com.sagor.service.ProductService;
 import com.sagor.util.ResponseBuilder;
 import com.zaxxer.hikari.HikariDataSource;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-
 @Service("productService")
 public class ProductServiceImpl implements ProductService {
 
@@ -40,8 +27,8 @@ public class ProductServiceImpl implements ProductService {
 	private final MailService mailService;
 	private final HikariDataSource dataSource;
 	private final ModelMapper modelMapper;
-	@Value("classpath:src/main/resource/static/reports/product.jasper")
-	private Resource reportResource;
+//	@Value("classpath:src/main/resource/static/reports/product.jasper")
+//	private Resource reportResource;
 
 	public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper, MailService mailService,
 			HikariDataSource dataSource) {
@@ -131,25 +118,18 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public HttpEntity<byte[]> getPdfResponse(HttpServletResponse response) {
-		Map<String, Object> reportParams = new HashMap<>();
-		try {
-			JasperPrint print = JasperFillManager.fillReport(reportResource.getFile().getName(), reportParams,
-					dataSource.getConnection());
-			byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_PDF);
-			response.setHeader("Content-Description", "attachment: filename=abc.pdf");
-			return new HttpEntity<>(pdfBytes, headers);
-		} catch (JRException e) {
-
-			e.printStackTrace();
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
+//		Map<String, Object> reportParams = new HashMap<>();
+//		try {
+//			JasperPrint print = JasperFillManager.fillReport("C:\\Users\\Asus\\eclipse-workspace\\EmailCofiguration\\src\\main\\resources\\static\\reports\\product.jasper", reportParams,
+//					dataSource.getConnection());
+//			byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+//			HttpHeaders headers = new HttpHeaders();
+//			headers.setContentType(MediaType.APPLICATION_PDF);
+//			response.setHeader("Content-Description", "attachment: filename=product_list.pdf");
+//			return new HttpEntity<>(pdfBytes, headers);
+//		} catch (JRException | IOException | SQLException e) {
+//			e.printStackTrace();
+//		}
 		return null;
 	}
 

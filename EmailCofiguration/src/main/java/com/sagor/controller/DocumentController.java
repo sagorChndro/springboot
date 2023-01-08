@@ -46,4 +46,9 @@ public class DocumentController {
 		return new HttpEntity<byte[]>((byte[]) resultMap.get("bytes"), headers);
 	}
 
+	@GetMapping("/downloadJasper")
+	public HttpEntity<byte[]> downloadJasper(HttpServletResponse response) {
+		return documentService.downloadJasper(response);
+	}
+
 }
